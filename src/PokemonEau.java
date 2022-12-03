@@ -1,0 +1,132 @@
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+public class PokemonEau implements Pokemon{
+
+
+    private final String name;
+    private String alias;
+    private List<Capacite> capacites;
+    private int pv;
+    private final int nombreEvolution; // attention si vous utilisez le constructeur par defaut votre nombreEvolution sera a 0
+    private int cptEvolution;
+    private final int level;
+    private final String type;
+
+
+    public PokemonEau(String name) {
+        this.name = name;
+        level = 1;
+        type="EAU";
+        nombreEvolution = 0;
+    }
+
+    public PokemonEau(String name, List<Capacite> capacites, int pv, int nombreEvolution) {
+        this.name = name;
+        this.capacites = capacites;
+        this.pv = pv;
+        this.nombreEvolution = nombreEvolution;
+        this.level = 1;
+        this.type = "EAU";
+    }
+
+    public PokemonEau(String name, String alias, List<Capacite> capacites, int pv, int nombreEvolution) {
+        this.name = name;
+        this.alias = alias;
+        this.capacites = capacites;
+        this.pv = pv;
+        this.nombreEvolution = nombreEvolution;
+        this.level = 1;
+        this.type = "EAU";
+    }
+
+    @Override
+    public void attaque(Capacite capacite, Pokemon pokemon) {
+        if(capacites.contains(capacite)){
+            pokemon.setPv(pokemon.getPv()-capacite.getDegat());
+        }
+
+    }
+
+    @Override
+    public Pokemon prochaineEvolution() {
+        return null;
+    }
+
+    @Override
+    public int getPv() {
+        return pv;
+    }
+
+    @Override
+    public void setPv(int pv) {
+        this.pv = pv;
+    }
+
+    @Override
+    public List<Capacite> getCapacites() {
+        return capacites;
+    }
+
+    @Override
+    public void setCapacites(List<Capacite> capacites) {
+        this.capacites = capacites;
+    }
+
+    @Override
+    public int getLevel() {
+        return level;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public int getCptEvolution() {
+        return cptEvolution;
+    }
+
+    public void setCptEvolution(int cptEvolution) {
+        if(cptEvolution<nombreEvolution){
+            this.cptEvolution = cptEvolution;
+        }
+
+    }
+
+    @Override
+    public int getNombreEvolution() {
+        return nombreEvolution;
+    }
+
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public Optional<Pokemon> evolution(EvolutionPokemonStrategy e){
+        return e.evolue(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PokemonEau that = (PokemonEau) o;
+        return nombreEvolution == that.nombreEvolution && cptEvolution == that.cptEvolution && Objects.equals(name, that.name) && Objects.equals(type, that.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, nombreEvolution, cptEvolution, type);
+    }
+}
